@@ -8,11 +8,10 @@ class Game
   attr_reader :total_value
 
   def initialize
-     @deck = []
-     @total_value = 0
-     @hand = []
-     build_deck
-
+    @deck = []
+    @total_value = 0
+    @hand = []
+    build_deck
   end
 
   def build_deck
@@ -27,15 +26,16 @@ class Game
 
   def deal
     2.times { @hand << @deck.pop}
+    @total_value = calculate_score
   end
 
 
   #I want to be able to list my hand
   def display
-  @hand.each do |card|
-    puts card
+    @hand.each do |card|
+      puts card
+    end
   end
-end
 
   # puts deck
   #The player can look at his or her current score
@@ -44,70 +44,81 @@ end
   # I need to be able to get the values of the cards
   # hand1 = hand[0].chop
   # puts hand1
-  def convert_cards(card_value)
-    score = 0
-    case card_value
-    when 'J'  
-      score = 10
-    when 'Q'
-      score = 10
-    when 'K'
-      score = 10
-    when 'A'
-      score = 11
-    else
-     score = card_value
-    end
-    add_score(score)
-  end
- 
+  # def convert_cards(card_value)
+  #   score = 0
+  #   case card_value
+  #   when 'J'  
+  #     score = 10
+  #   when 'Q'
+  #     score = 10
+  #   when 'K'
+  #     score = 10
+  #   when 'A'
+  #     score = 11
+  #   else
+  #    score = card_value
+  #   end
+  #   @total_value += score.to_i
+  # end
+
   def calculate_score
-    card_value = 0
-    puts "I'm in the calculate method"
-     @hand.each_with_index do |card, suit|
-      puts card
-      card_value = @hand[suit].chop
-      convert_cards(card_value)
-     end
-   end
+    score = 0
+    
+    # @hand = ["2H", "10C", "AS"]
+    @hand.each do |card|
+      value = card.chop
 
-   def add_score(card_value)
-      @total_value += card_value.to_i
-   end
-  
-  #The player can decide if he/she wants to to hit or stand
-   def hit_or_stand
-      if total_value >= 3
-        print "Hit or stand (H/S):"
-        input = gets.chomp
-          if input == 'h'.capitalize
-            hit
-          elsif input == 's'.capitalize
-            puts @total_value
-          end
+      if value == 'J' || value == 'Q' || value == 'K'
+        score += 10
+      elsif value == 'A'
+        score += 1
+      else
+        score += value.to_i
       end
-   end
+    end
 
-   def hit
-    @deck.pop
-   end
+    score
+      # card_value = @hand[suit].chop
+      # convert_cards(card_value)
+  end
 
+  #The player can decide if he/she wants to to hit or stand
+  def players_turn
+    print "Hit or stand (H/S):"
+    input = gets.chomp
+    if input == 'h'
+      #need to keep going until player is close 21 but not going over
+      hit
+    elsif input == 's'
+      puts @total_value
+    end
+  end
 
-  # calculate_score(hand)
+  def hit
+    card = @deck.pop
+    puts "Dealt card #{card}"
+    @hand << card
+    @total_value = calculate_score
+    puts @total_value
+  end
 
-  #The player's score is printed for all to see
-  #The dealer's first card is dealt
-  #The dealer's 2nd card is dealt
-  #The dealer score is revealed
-  #The dealer will hit or stand depending on score
-  #If the player's hand is higher than the dealer, then he wins 
 end
-  #Want to prompt user that he or she is playing Blackjack
+
+# calculate_score(hand)
+
+#The player's score is printed for all to see
+#The dealer's first card is dealt
+#The dealer's 2nd card is dealt
+#The dealer score is revealed
+#The dealer will hit or stand depending on score
+#If the player's hand is higher than the dealer, then he wins 
+
+#Want to prompt user that he or she is playing Blackjack
 puts "Welcome to Blackjack!"
 blackjack = Game.new
 blackjack.deal
 blackjack.display
-blackjack.calculate_score
+
 puts blackjack.total_value
-blackjack.hit_or_stand
+blackjack.players_turn
 
