@@ -74,10 +74,18 @@ end
    def add_score(card_value)
       @total_value += card_value.to_i
    end
+  
+  #The player can decide if he/she wants to to hit or stand
+   def hit_or_stand
+      if total_value >= 3
+        print "Hit or stand (H/S):"
+        gets.chomp
+      end
+   end
 
 
   # calculate_score(hand)
-  #The player can decide if he/she wants to to hit or stand
+
   #The player's score is printed for all to see
   #The dealer's first card is dealt
   #The dealer's 2nd card is dealt
@@ -92,4 +100,5 @@ blackjack.deal
 blackjack.display
 blackjack.calculate_score
 puts blackjack.total_value
+blackjack.hit_or_stand
 
