@@ -97,8 +97,8 @@ end
 puts "Welcome to Blackjack!"
 blackjack = Game.new
 blackjack.deal
-# blackjack.display
-# blackjack.calculate_score
+blackjack.display
+blackjack.calculate_score
 puts blackjack.total_value
 blackjack.hit_or_stand
 
