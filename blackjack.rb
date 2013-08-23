@@ -79,8 +79,16 @@ end
    def hit_or_stand
       if total_value >= 3
         print "Hit or stand (H/S):"
-        gets.chomp
+        input = gets.chomp
+          if input == 'h'.capitalize
+            hit
+          elsif input == 's'.capitalize
+            puts @total_value
+          end
       end
+   end
+
+   def hit
    end
 
 
