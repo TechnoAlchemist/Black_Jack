@@ -89,6 +89,7 @@ end
    end
 
    def hit
+    @deck.pop
    end
 
 
