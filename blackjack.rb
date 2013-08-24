@@ -84,14 +84,21 @@ class Game
 
   #The player can decide if he/she wants to to hit or stand
   def players_turn
+    input = ""
+    winning_hand = 21
+    until input == 's'
     print "Hit or stand (H/S):"
     input = gets.chomp
-    if input == 'h'
+      if input == 'h'
       #need to keep going until player is close 21 but not going over
-      hit
-    elsif input == 's'
-      puts @total_value
-    end
+        hit
+        if @total_value > winning_hand
+          puts "You lose!"
+        end
+      elsif input == 's'
+        puts @total_value
+      end
+    end 
   end
 
   def hit
