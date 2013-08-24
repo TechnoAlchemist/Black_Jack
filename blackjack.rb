@@ -33,7 +33,8 @@ class Game
   #I want to be able to list my hand
   def display
     @hand.each do |card|
-      puts card
+      puts "Player was dealt #{card}"
+      #puts card
     end
   end
 
@@ -93,7 +94,8 @@ class Game
       #need to keep going until player is close 21 but not going over
         hit
         if @total_value > winning_hand
-          puts "You lose!"
+          puts "Bust! You lose..."
+          break
         end
       elsif input == 's'
         puts @total_value
