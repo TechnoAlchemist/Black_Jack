@@ -8,7 +8,6 @@ class Game
 
   def initialize
     @deck = []
-  
     @p_hand = []
     @d_hand = []
     build_deck
@@ -29,16 +28,13 @@ class Game
       @p_hand << @deck.pop 
       @d_hand << @deck.pop 
     end
-    # calculate_score(hand)
   end
-
 
   #I want to be able to list my hand
   def display(gamer)
     if gamer == :player
     @p_hand.each do |card|
       puts "#{gamer} was dealt #{card}"
-      #puts car 
       end
     elsif gamer == :dealer
       @d_hand.each do |card|
@@ -47,29 +43,6 @@ class Game
     end
   end
 
-  # puts deck
-  #The player can look at his or her current score
-  #Want to use a calculate method that returns the score
-  #Calculate the score by adding the values together
-  # I need to be able to get the values of the cards
-  # hand1 = hand[0].chop
-  # puts hand1
-  # def convert_cards(card_value)
-  #   score = 0
-  #   case card_value
-  #   when 'J'  
-  #     score = 10
-  #   when 'Q'
-  #     score = 10
-  #   when 'K'
-  #     score = 10
-  #   when 'A'
-  #     score = 11
-  #   else
-  #    score = card_value
-  #   end
-  #   @total_value += score.to_i
-  # end
 
   def calculate_score(gamer)
     score = 0
@@ -88,10 +61,7 @@ class Game
         score += value.to_i
       end
     end
-
     score
-      # card_value = @hand[suit].chop
-      # convert_cards(card_value)
   end
 
   #The player can decide if he/she wants to to hit or stand
@@ -100,36 +70,41 @@ class Game
     input = ""
     winning_hand = 21
     
+    #need to keep going until player is close 21 but not going over
     until input == 's' || calculate_score(:player) > winning_hand
       print "Hit or stand (H/S):"
       input = gets.chomp
-      if input == 'h'
-      #need to keep going until player is close 21 but not going over
+      if input == 'h'  
         hit(:player)
         puts calculate_score(:player)
-        if calculate_score(:player) > winning_hand
-          puts "Bust! You lose..."
-        end
       end
     end 
+    if calculate_score(:player) > winning_hand
+      puts "Bust! You lose..."
+    end
   end
 
   def dealers_turn
-    player_hand = 21
-    dealer_stops = 21
-    until calculate_score(:dealer) <= dealer_stops
-      #need to keep going until player is close 21 but not going over
+    dealer_stops = 17
+    until calculate_score(:dealer) >= dealer_stops
         hit(:dealer)
-        # puts "Dealer stands"
     end
-      if calculate_score(:dealer) > dealer_stops
+      
+  end
+
+  def who_won
+    great_hand = 21
+    if calculate_score(:dealer) > great_hand
         puts "Dealer busts." 
         puts "You win!"
-        # puts "Dealer stands."
-      elsif calculate_score(:dealer) < calculate_score(:player) && calculate_score(:player ) <= player_hand
-        puts "Dealer stands"
-        puts "You win"
-      end
+    elsif calculate_score(:dealer) < calculate_score(:player) && calculate_score(:player ) <= great_hand
+      puts "Dealer score: #{calculate_score(:dealer)}"
+      puts "Dealer stands"
+      puts "You win!"  
+    elsif calculate_score(:dealer) > calculate_score(:player) && calculate_score(:dealer) <= great_hand
+      puts "Dealer score: #{calculate_score(:dealer)}"
+      puts "Dealer wins!"
+    end
   end
 
   def hit(gamer)
@@ -137,22 +112,9 @@ class Game
     hand = @d_hand if gamer == :dealer
     hand << @deck.pop
     puts "Dealt card #{hand.last}"
-    
-    # @total_value = calculate_score
-    # puts @total_value
-    # puts calculate_score(hand)
   end
 
 end
-
-# calculate_score(hand)
-
-#The player's score is printed for all to see
-#The dealer's first card is dealt
-#The dealer's 2nd card is dealt
-#The dealer score is revealed
-#The dealer will hit or stand depending on score
-#If the player's hand is higher than the dealer, then he wins 
 
 #Want to prompt user that he or she is playing Blackjack
 puts "Welcome to Blackjack!"
@@ -160,7 +122,6 @@ blackjack = Game.new
 blackjack.initial_deal
 blackjack.display(:player)
 blackjack.display(:dealer)
-# puts blackjack.total_value
 blackjack.players_turn
 blackjack.dealers_turn
-
+blackjack.who_won
