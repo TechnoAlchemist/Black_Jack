@@ -88,8 +88,7 @@ class Game
     dealer_stops = 17
     until calculate_score(:dealer) >= dealer_stops
         hit(:dealer)
-    end
-      
+    end 
   end
 
   def who_won
