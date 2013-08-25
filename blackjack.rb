@@ -10,7 +10,8 @@ class Game
   def initialize
     @deck = []
     @total_value = 0
-    @hand = []
+    @p_hand = []
+    @d_hand = []
     build_deck
   end
 
@@ -24,17 +25,26 @@ class Game
     @deck.shuffle!
   end
 
-  def deal
-    2.times { @hand << @deck.pop}
-    @total_value = calculate_score
+  def initial_deal
+    2.times do 
+      @p_hand << @deck.pop 
+      @d_hand << @deck.pop 
+    end
+    # calculate_score(hand)
   end
 
 
   #I want to be able to list my hand
-  def display
-    @hand.each do |card|
-      puts "Player was dealt #{card}"
-      #puts card
+  def display(gamer)
+    if gamer == :player
+    @p_hand.each do |card|
+      puts "#{gamer} was dealt #{card}"
+      #puts car 
+      end
+    elsif gamer == :dealer
+      @d_hand.each do |card|
+        puts "#{gamer} was dealt #{card}"
+      end
     end
   end
 
@@ -62,11 +72,11 @@ class Game
   #   @total_value += score.to_i
   # end
 
-  def calculate_score
+  def calculate_score(hand)
     score = 0
     
     # @hand = ["2H", "10C", "AS"]
-    @hand.each do |card|
+    hand.each do |card|
       value = card.chop
 
       if value == 'J' || value == 'Q' || value == 'K'
@@ -93,22 +103,38 @@ class Game
       if input == 'h'
       #need to keep going until player is close 21 but not going over
         hit
-        if @total_value > winning_hand
+        puts calculate_score(@p_hand)
+        if calculate_score(@p_hand) > winning_hand
           puts "Bust! You lose..."
           break
         end
       elsif input == 's'
-        puts @total_value
+        puts calculate_score(@p_hand)
       end
     end 
   end
 
-  def hit
+  def dealers_turn
+    dealer_stops = 17
+    until calculate_score(@d_hand) <= dealer_stops
+      #need to keep going until player is close 21 but not going over
+        hit
+    end
+    if calculate_score(@d_hand) > dealer_stops
+      puts "Dealer busts." 
+      puts calculate_score(@d_hand)
+    else
+    puts "Dealer stands."
+    end
+  end
+
+  def hit(hand)
     card = @deck.pop
     puts "Dealt card #{card}"
-    @hand << card
-    @total_value = calculate_score
-    puts @total_value
+    hand << card
+    # @total_value = calculate_score
+    # puts @total_value
+    # puts calculate_score(hand)
   end
 
 end
@@ -125,9 +151,10 @@ end
 #Want to prompt user that he or she is playing Blackjack
 puts "Welcome to Blackjack!"
 blackjack = Game.new
-blackjack.deal
-blackjack.display
-
+blackjack.initial_deal
+blackjack.display(:player)
+blackjack.display(:dealer)
 puts blackjack.total_value
 blackjack.players_turn
+blackjack.dealers_turn
 
