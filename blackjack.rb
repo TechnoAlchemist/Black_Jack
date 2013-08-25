@@ -5,11 +5,10 @@ class Game
   SUITS = ['♠', '♣', '♥', '♦']
   VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
-  attr_reader :total_value
 
   def initialize
     @deck = []
-    @total_value = 0
+  
     @p_hand = []
     @d_hand = []
     build_deck
@@ -72,9 +71,11 @@ class Game
   #   @total_value += score.to_i
   # end
 
-  def calculate_score(hand)
+  def calculate_score(gamer)
     score = 0
-    
+    hand = @p_hand if gamer == :player
+    hand = @d_hand if gamer == :dealer
+
     # @hand = ["2H", "10C", "AS"]
     hand.each do |card|
       value = card.chop
@@ -95,21 +96,20 @@ class Game
 
   #The player can decide if he/she wants to to hit or stand
   def players_turn
+    puts "Player score: #{calculate_score(:player)}"
     input = ""
     winning_hand = 21
-    until input == 's'
-    print "Hit or stand (H/S):"
-    input = gets.chomp
+    
+    until input == 's' || calculate_score(:player) > winning_hand
+      print "Hit or stand (H/S):"
+      input = gets.chomp
       if input == 'h'
       #need to keep going until player is close 21 but not going over
-        hit
-        puts calculate_score(@p_hand)
-        if calculate_score(@p_hand) > winning_hand
+        hit(:player)
+        puts calculate_score(:player)
+        if calculate_score(:player) > winning_hand
           puts "Bust! You lose..."
-          break
         end
-      elsif input == 's'
-        puts calculate_score(@p_hand)
       end
     end 
   end
@@ -128,10 +128,12 @@ class Game
     end
   end
 
-  def hit(hand)
-    card = @deck.pop
-    puts "Dealt card #{card}"
-    hand << card
+  def hit(gamer)
+    hand = @p_hand if gamer == :player
+    hand = @d_hand if gamer == :dealer
+    hand << @deck.pop
+    puts "Dealt card #{hand.last}"
+    
     # @total_value = calculate_score
     # puts @total_value
     # puts calculate_score(hand)
@@ -154,7 +156,7 @@ blackjack = Game.new
 blackjack.initial_deal
 blackjack.display(:player)
 blackjack.display(:dealer)
-puts blackjack.total_value
+# puts blackjack.total_value
 blackjack.players_turn
 blackjack.dealers_turn
 
