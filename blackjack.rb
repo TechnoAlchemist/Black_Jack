@@ -115,7 +115,8 @@ class Game
   end
 
   def dealers_turn
-    dealer_stops = 17
+    player_hand = 21
+    dealer_stops = 21
     until calculate_score(:dealer) <= dealer_stops
       #need to keep going until player is close 21 but not going over
         hit(:dealer)
@@ -125,7 +126,7 @@ class Game
         puts "Dealer busts." 
         puts "You win!"
         # puts "Dealer stands."
-      elsif calculate_score(:dealer) < calculate_score(:player)
+      elsif calculate_score(:dealer) < calculate_score(:player) && calculate_score(:player ) <= player_hand
         puts "Dealer stands"
         puts "You win"
       end
