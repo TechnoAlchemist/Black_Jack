@@ -16,7 +16,7 @@ class Deck
   end
 
   def shuffle
-    @deck.shuffle
+    @deck.shuffle!
   end
 
   def build_and_shuffle
@@ -34,10 +34,11 @@ class Card
 end
 
 class Hand
-  def initialize(deck)
+  def initialize(deck, gamer)
     @deck = deck
     @cards = []
-    start_hand 
+    start_hand
+    @gamer = gamer 
   end
 
   def start_hand
@@ -46,7 +47,7 @@ class Hand
 
   def display_hand
     @cards.each do |card|
-      puts "#{card.value} #{card.suit}"  
+      puts "#{@gamer} was dealt: #{card.value} #{card.suit}"  
     end
   end
   
@@ -74,9 +75,10 @@ class Game
 
   def deal_hand
     @deck.build_and_shuffle
-    @player_hand = Hand.new(@deck)
-    @dealer_hand = Hand.new(@deck)
+    @player_hand = Hand.new(@deck, "player")
+    @dealer_hand = Hand.new(@deck, "dealer")
     @player_hand.display_hand
+    @dealer_hand.display_hand
   end
 end
 
