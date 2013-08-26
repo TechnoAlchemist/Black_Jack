@@ -3,6 +3,7 @@ class Deck
   VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
   
   def pop
+    @deck.pop
   end
 
   def build
@@ -25,11 +26,11 @@ class Deck
 end
 
 class Card
+  attr_reader :suit, :value
    def initialize(suit, value)
     @suit = suit
     @value = value
   end
-
 end
 
 class Hand
@@ -44,14 +45,19 @@ class Hand
   end
 
   def display_hand
-    @cards.suit
-    @cards.value
+    @cards.each do |card|
+      puts "#{card.value} #{card.suit}"  
+    end
   end
   
   def hit(card)
+    @cards << card
   end
 
   def stay
+    hand_stay = 17
+    if @cards.value <= hand_stay
+    end
   end
 
   def score
@@ -70,6 +76,7 @@ class Game
     @deck.build_and_shuffle
     @player_hand = Hand.new(@deck)
     @dealer_hand = Hand.new(@deck)
+    @player_hand.display_hand
   end
 end
 
