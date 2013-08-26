@@ -33,12 +33,12 @@ class Game
   #I want to be able to list my hand
   def display(gamer)
     if gamer == :player
-    @p_hand.each do |card|
+      @p_hand.each do |card|
       puts "#{gamer} was dealt #{card}"
       end
     elsif gamer == :dealer
-      @d_hand.each do |card|
-        puts "#{gamer} was dealt #{card}"
+       @d_hand.each do |card|
+       puts "#{gamer} was dealt #{card}"
       end
     end
   end
