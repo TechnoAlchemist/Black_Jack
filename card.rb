@@ -1,6 +1,6 @@
 class Card
   
-  #attr_reader :suits, :values
+  attr_reader :suits, :values
   
   def initialize(values = nil, suits = nil)
     if suits.nil? && values.nil?
@@ -12,10 +12,15 @@ class Card
     end
     puts "Create a new card: #{@values} of #{@suits}"
   end
+
+  def draw_cards
+
+  end
 end
 
-new_card = Card.new()
-
-2.times {new_card}
-
-
+#I want to create a card class
+class Card
+  def initialize(suits, values)
+    @suits = 
+end
+#The class should just initialize a a suit and a value

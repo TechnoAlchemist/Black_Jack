@@ -34,15 +34,9 @@ class Card
 end
 
 class Hand
-  def initialize(deck, gamer)
-    @deck = deck
+  def initialize(gamer)
     @cards = []
-    start_hand
     @gamer = gamer 
-  end
-
-  def start_hand
-    2.times {@cards << @deck.pop}
   end
 
   def display_hand
@@ -75,10 +69,26 @@ class Game
 
   def deal_hand
     @deck.build_and_shuffle
-    @player_hand = Hand.new(@deck, "player")
-    @dealer_hand = Hand.new(@deck, "dealer")
+    @player_hand = Hand.new("player")
+    2.times {@player_hand.hit(@deck.pop)}
+    @dealer_hand = Hand.new("dealer")
+    2.times {@dealer_hand.hit(@deck.pop)}
     @player_hand.display_hand
     @dealer_hand.display_hand
+  end
+
+  ###I want to create method that asks the player whether they want to hit or stand
+  def hit_or_stay
+    winning_hand = 21
+    puts "Player score: #{@player_hand.score}?"
+    input = ""
+    until input == 's' || @player_hand.score > winning_hand 
+      print "Hit or Stand (h/s)?"
+      input = gets.chomp
+      if input == 'h'
+      @player_hand.hit(@deck.pop)
+      end
+    end
   end
 end
 
