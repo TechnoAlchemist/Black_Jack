@@ -49,16 +49,24 @@ class Hand
     @cards << card
   end
 
-  def stay
-    hand_stay = 17
-    if @cards.value <= hand_stay
-    end
-  end
-
   def score
+    score = 0 
+    @cards.each do |card|
+      value = card.value
+
+      if value == 'J' || value == 'Q' || value == 'K'
+        score += 10
+      elsif value == 'A'
+        score += 1
+      else
+        score += value.to_i
+      end
+    end
+    score
   end
 
   def busted?
+    score > 21
   end
 end
 
@@ -79,19 +87,47 @@ class Game
 
   ###I want to create method that asks the player whether they want to hit or stand
   def hit_or_stay
-    winning_hand = 21
     puts "Player score: #{@player_hand.score}?"
     input = ""
-    until input == 's' || @player_hand.score > winning_hand 
+    until input == 's' || @player_hand.busted?
+      # break if @player_hand.busted?
       print "Hit or Stand (h/s)?"
       input = gets.chomp
       if input == 'h'
-      @player_hand.hit(@deck.pop)
+        @player_hand.hit(@deck.pop)
+        puts @player_hand.score
       end
     end
   end
+
+   def dealers_turn
+    dealer_stops = 17
+    until @dealer_hand.score >= dealer_stops
+        @dealer_hand.hit(@deck.pop)
+    end 
+  end
+
+  def who_won
+    if @player_hand.busted?
+      puts "Bust! You lose...homey"
+    elsif @dealer_hand.score > 21
+        puts "Dealer busts." 
+        puts "You win!"
+    elsif @dealer_hand.score < @player_hand.score 
+      puts "Dealer score: #{@dealer_hand.score}"
+      puts "Dealer stands"
+      puts "You win!"  
+    elsif @dealer_hand.score > @player_hand.score 
+      puts "Dealer score: #{@dealer_hand.score}"
+      puts "Dealer wins!"
+    end
+  end
+
 end
 
 
 game = Game.new
 game.deal_hand
+game.hit_or_stay
+game.dealers_turn
+game.who_won
