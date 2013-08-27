@@ -85,12 +85,11 @@ class Game
     @dealer_hand.display_hand
   end
 
-  ###I want to create method that asks the player whether they want to hit or stand
   def hit_or_stay
-    puts "Player score: #{@player_hand.score}?"
+    puts "Player score: #{@player_hand.score}"
     input = ""
-    until input == 's' || @player_hand.busted?
-      # break if @player_hand.busted?
+    until input == 's' 
+      break if @player_hand.busted?
       print "Hit or Stand (h/s)?"
       input = gets.chomp
       if input == 'h'
