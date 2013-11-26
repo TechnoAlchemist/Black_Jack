@@ -90,7 +90,7 @@ class Game
     input = ""
     until input == 's' 
       break if @player_hand.busted?
-      print "Hit or Stand (h/s)?"
+      print "Hit or Stand (h/s)? "
       input = gets.chomp
       if input == 'h'
         @player_hand.hit(@deck.pop)

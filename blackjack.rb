@@ -70,7 +70,6 @@ class Game
     input = ""
     winning_hand = 21
     
-    #need to keep going until player is close 21 but not going over
     until input == 's' || calculate_score(:player) > winning_hand
       print "Hit or stand (H/S):"
       input = gets.chomp
@@ -115,7 +114,6 @@ class Game
 
 end
 
-#Want to prompt user that he or she is playing Blackjack
 puts "Welcome to Blackjack!"
 blackjack = Game.new
 blackjack.initial_deal
